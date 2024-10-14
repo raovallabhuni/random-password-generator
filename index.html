@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #71717d;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #5790cc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        input {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+        }
+        .slider {
+            width: 90%;
+            color: #3217ff;
+        }
+        .output-container {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #abeae4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .output {
+            font-size: 18px;
+            word-break: break-word;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .copy-btn {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Random Password Generator</h1>
+    <label for="length">Password Length:</label>
+    <input type="range" id="length" min="6" max="64" value="8" class="slider" oninput="updateLength(this.value)">
+    <p id="lengthValue">Password Length: 8</p>
+    
+    <button onclick="generatePassword()">Generate Password</button>
+    
+    <div class="output-container" id="outputContainer" style="display: none;">
+        <div class="output" id="passwordOutput"></div>
+        <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">Copy</button>
+    </div>
+</div>
+
+<script>
+    // Function to update the displayed password length when the slider is moved
+    function updateLength(value) {
+        document.getElementById('lengthValue').textContent = "Password Length: " + value;
+    }
+
+    // Function to generate the random password
+    function generatePassword() {
+        const length = document.getElementById('length').value; // Get the slider value (password length)
+        const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+        let password = "";
+
+        // Loop to create a password of the desired length
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
+        }
+
+        // Display the generated password
+        document.getElementById('passwordOutput').textContent = password;
+
+        // Show the output container with the copy button
+        document.getElementById('outputContainer').style.display = 'flex';
+    }
+
+    // Function to copy the password to the clipboard
+    function copyToClipboard() {
+        const password = document.getElementById('passwordOutput').textContent;
+        const textarea = document.createElement('textarea');
+        textarea.value = password;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('Password copied to clipboard!');
+    }
+    
+</script>
+
+</body>
+</html>
